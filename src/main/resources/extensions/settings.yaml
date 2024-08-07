@@ -1,0 +1,24 @@
+apiVersion: v1alpha1
+kind: Setting
+metadata:
+  name: plugin-img-lazyload-settings
+spec:
+  forms:
+    - group: basic
+      label: 基本设置
+      formSchema:
+        - $formkit: radio
+          name: status
+          label: 启用图片懒加载
+          help: 需要引用jquery, 如:https://github.com/jquery/jquery/blob/3.7.1/dist/jquery.min.js
+          value: false
+          options:
+            - value: true
+              label: 开启
+            - value: false
+              label: 关闭
+        - $formkit: attachment
+          label: load gif
+          help: 设置占位图片路径
+          name: loadImgUrl
+          value: ''
