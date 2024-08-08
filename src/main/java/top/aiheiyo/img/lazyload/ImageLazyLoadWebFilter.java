@@ -33,6 +33,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import run.halo.app.plugin.ReactiveSettingFetcher;
 import run.halo.app.security.AdditionalWebFilter;
+import top.aiheiyo.img.lazyload.common.constant.BusConstant;
 import top.aiheiyo.img.lazyload.core.Settings;
 
 /**
@@ -133,28 +134,28 @@ public class ImageLazyLoadWebFilter implements AdditionalWebFilter {
         private String buildImageLazyLoadAttr(String html, Settings.BasicConfig config) {
             Document document = Jsoup.parse(html);
 
-            document.select("img").forEach(img -> {
+            document.select(BusConstant.HtmlDoc.IMG).forEach(img -> {
 
-                String src = img.attr("src");
+                String src = img.attr(BusConstant.HtmlDoc.SRC);
 
-                String original = img.attr("data-original");
+                String original = img.attr(BusConstant.HtmlDoc.DATA_ORIGINAL);
                 if (StringUtils.isBlank(original)) {
-                    img.attr("data-original", src);
+                    img.attr(BusConstant.HtmlDoc.DATA_ORIGINAL, src);
                 }
 
                 if (StringUtils.isNotBlank(config.getLoadImgUrl())) {
-                    img.attr("src", config.getLoadImgUrl());
+                    img.attr(BusConstant.HtmlDoc.SRC, config.getLoadImgUrl());
                 } else {
-                    img.removeAttr("src");
+                    img.removeAttr(BusConstant.HtmlDoc.SRC);
                 }
 
-                String loading = img.attr("loading");
+                String loading = img.attr(BusConstant.HtmlDoc.LOADING);
                 if (StringUtils.isBlank(loading)) {
-                    img.attr("loading", "lazy");
+                    img.attr(BusConstant.HtmlDoc.LOADING, BusConstant.HtmlDoc.LAZY);
                 }
 
-                if (!img.hasClass("lazy")) {
-                    img.addClass("lazy");
+                if (!img.hasClass(BusConstant.HtmlDoc.LAZY)) {
+                    img.addClass(BusConstant.HtmlDoc.LAZY);
                 }
             });
 
@@ -184,6 +185,6 @@ public class ImageLazyLoadWebFilter implements AdditionalWebFilter {
 
     @Override
     public int getOrder() {
-        return LOWEST_PRECEDENCE - 100;
+        return LOWEST_PRECEDENCE - 90;
     }
 }
