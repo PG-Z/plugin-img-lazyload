@@ -56,7 +56,7 @@ public class ImageLazyLoadWebFilter implements AdditionalWebFilter {
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         return pathMatcher.matches(exchange)
             .flatMap(matchResult -> {
-                if (matchResult.isMatch() && shouldOptimize(exchange)) {
+                if (shouldOptimize(exchange)) {
                     var decoratedExchange = exchange.mutate()
                         .response(new ImageLazyLodResponseDecorator(exchange))
                         .build();
