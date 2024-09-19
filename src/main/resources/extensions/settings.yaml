@@ -22,3 +22,9 @@ spec:
           help: 设置占位图片路径
           name: loadImgUrl
           value: ''
+        - $formkit: attachment
+          label: 图片缩略参数
+          help: 设置图片缩略参数, 如七牛云imageView2
+          placeholder: "imageView2/1/w/301/h/301/q/100"
+          name: thumbnailParam
+          value: ''

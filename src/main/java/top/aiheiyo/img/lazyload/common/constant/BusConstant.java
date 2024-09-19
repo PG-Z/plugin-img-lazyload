@@ -15,6 +15,7 @@ public class BusConstant {
         String IMG = "img";
         String SRC = "src";
         String DATA_ORIGINAL = "data-original";
+        String DATA_LIGHT_GALLERY = "data-light-gallery";
         String LOADING = "loading";
         String LAZY = "lazy";
     }

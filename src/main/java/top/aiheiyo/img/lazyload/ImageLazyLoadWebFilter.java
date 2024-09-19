@@ -140,7 +140,12 @@ public class ImageLazyLoadWebFilter implements AdditionalWebFilter {
 
                 String original = img.attr(BusConstant.HtmlDoc.DATA_ORIGINAL);
                 if (StringUtils.isBlank(original)) {
-                    img.attr(BusConstant.HtmlDoc.DATA_ORIGINAL, src);
+                    img.attr(BusConstant.HtmlDoc.DATA_ORIGINAL, this.buildThumbnail(src, config));
+                }
+
+                String lightGallery = img.attr(BusConstant.HtmlDoc.DATA_LIGHT_GALLERY);
+                if (StringUtils.isBlank(lightGallery)) {
+                    img.attr(BusConstant.HtmlDoc.DATA_LIGHT_GALLERY, src);
                 }
 
                 if (StringUtils.isNotBlank(config.getLoadImgUrl())) {
@@ -160,6 +165,16 @@ public class ImageLazyLoadWebFilter implements AdditionalWebFilter {
             });
 
             return document.outerHtml();
+        }
+
+        private String buildThumbnail(String src, Settings.BasicConfig config) {
+            if (StringUtils.isBlank(config.getThumbnailParam())) {
+                return src;
+            }
+            if (StringUtils.contains(src, "?")) {
+                return src + "&" + config.getThumbnailParam();
+            }
+            return src + "?" + config.getThumbnailParam();
         }
     }
 

@@ -29,6 +29,11 @@ public class Settings {
          */
         private String loadImgUrl;
 
+        /**
+         * 设置图片缩略参数
+         */
+        private String thumbnailParam;
+
     }
 
 }
