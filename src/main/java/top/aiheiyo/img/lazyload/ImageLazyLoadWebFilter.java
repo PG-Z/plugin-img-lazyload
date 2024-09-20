@@ -137,44 +137,38 @@ public class ImageLazyLoadWebFilter implements AdditionalWebFilter {
             document.select(BusConstant.HtmlDoc.IMG).forEach(img -> {
 
                 String src = img.attr(BusConstant.HtmlDoc.SRC);
+                if (StringUtils.isNotBlank(config.getIgnoreAttr()) && img.hasAttr(
+                    config.getIgnoreAttr())) {
+                    img.removeAttr(BusConstant.HtmlDoc.DATA_ORIGINAL);
+                } else {
+                    String original = img.attr(BusConstant.HtmlDoc.DATA_ORIGINAL);
+                    if (StringUtils.isBlank(original)) {
+                        img.attr(BusConstant.HtmlDoc.DATA_ORIGINAL, src);
+                    }
 
-                String original = img.attr(BusConstant.HtmlDoc.DATA_ORIGINAL);
-                if (StringUtils.isBlank(original)) {
-                    img.attr(BusConstant.HtmlDoc.DATA_ORIGINAL, this.buildThumbnail(src, config));
+                    if (StringUtils.isNotBlank(config.getLoadImgUrl())) {
+                        img.attr(BusConstant.HtmlDoc.SRC, config.getLoadImgUrl());
+                    } else {
+                        img.removeAttr(BusConstant.HtmlDoc.SRC);
+                    }
+
+                    String loading = img.attr(BusConstant.HtmlDoc.LOADING);
+                    if (StringUtils.isBlank(loading)) {
+                        img.attr(BusConstant.HtmlDoc.LOADING, BusConstant.HtmlDoc.LAZY);
+                    }
+
+                    if (!img.hasClass(BusConstant.HtmlDoc.LAZY)) {
+                        img.addClass(BusConstant.HtmlDoc.LAZY);
+                    }
                 }
 
                 String lightGallery = img.attr(BusConstant.HtmlDoc.DATA_LIGHT_GALLERY);
                 if (StringUtils.isBlank(lightGallery)) {
                     img.attr(BusConstant.HtmlDoc.DATA_LIGHT_GALLERY, src);
                 }
-
-                if (StringUtils.isNotBlank(config.getLoadImgUrl())) {
-                    img.attr(BusConstant.HtmlDoc.SRC, config.getLoadImgUrl());
-                } else {
-                    img.removeAttr(BusConstant.HtmlDoc.SRC);
-                }
-
-                String loading = img.attr(BusConstant.HtmlDoc.LOADING);
-                if (StringUtils.isBlank(loading)) {
-                    img.attr(BusConstant.HtmlDoc.LOADING, BusConstant.HtmlDoc.LAZY);
-                }
-
-                if (!img.hasClass(BusConstant.HtmlDoc.LAZY)) {
-                    img.addClass(BusConstant.HtmlDoc.LAZY);
-                }
             });
 
             return document.outerHtml();
-        }
-
-        private String buildThumbnail(String src, Settings.BasicConfig config) {
-            if (StringUtils.isBlank(config.getThumbnailParam())) {
-                return src;
-            }
-            if (StringUtils.contains(src, "?")) {
-                return src + "&" + config.getThumbnailParam();
-            }
-            return src + "?" + config.getThumbnailParam();
         }
     }
 

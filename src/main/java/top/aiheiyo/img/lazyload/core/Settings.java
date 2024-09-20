@@ -28,12 +28,10 @@ public class Settings {
          * 设置占位图片路径
          */
         private String loadImgUrl;
-
         /**
-         * 设置图片缩略参数
+         * 忽略属性
          */
-        private String thumbnailParam;
-
+        private String ignoreAttr;
     }
 
 }
